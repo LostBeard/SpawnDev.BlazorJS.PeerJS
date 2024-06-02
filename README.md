@@ -1,4 +1,5 @@
 # SpawnDev.BlazorJS.PeerJS
+PeerJS simplifies peer-to-peer data, video, and audio calls.
 
 ## WIP: Demo and Nuget will be up soon
 
