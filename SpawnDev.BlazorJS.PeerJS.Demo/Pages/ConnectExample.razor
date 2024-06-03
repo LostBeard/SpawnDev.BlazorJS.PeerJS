@@ -86,6 +86,7 @@
         dataConnection.OnOpen += DataConnection_OnOpen;
         dataConnection.OnClose += DataConnection_OnClose;
         dataConnection.OnData += DataConnection_OnData;
+        dataConnection.OnError += DataConnection_OnError;
     }
 
     void DataConnection_OnData(JSObject msg)
@@ -112,6 +113,11 @@
         DisposeDataConnection();
     }
 
+    void DataConnection_OnError(PeerError error)
+    {
+        Log($"DataConnection_OnError: {error.Type}");
+    }
+
     void DisposeDataConnection()
     {
         if (dataConnection != null)
@@ -119,6 +125,7 @@
             dataConnection.OnOpen -= DataConnection_OnOpen;
             dataConnection.OnClose -= DataConnection_OnClose;
             dataConnection.OnData -= DataConnection_OnData;
+            dataConnection.OnError -= DataConnection_OnError;
             dataConnection.Dispose();
             dataConnection = null;
         }
@@ -145,11 +152,9 @@
         Log("Peer_OnClose");
     }
 
-    void Peer_OnError(JSObject error)
+    void Peer_OnError(PeerError error)
     {
-        JS.Log("_error", error);
-        JS.Set("_error", error);
-        StateHasChanged();
+        Log($"Peer_OnError: {error.Type}");
     }
 
     public void Dispose()

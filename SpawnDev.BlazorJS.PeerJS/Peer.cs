@@ -116,6 +116,6 @@ namespace SpawnDev.BlazorJS.PeerJS
         /// Errors on the peer are almost always fatal and will destroy the peer. Errors from the underlying socket and PeerConnections are forwarded here.<br/>
         /// 
         /// </summary>
-        public JSEventCallback<JSObject> OnError { get => new JSEventCallback<JSObject>("error", On, Off); set { } }
+        public JSEventCallback<PeerError> OnError { get => new JSEventCallback<PeerError>("error", On, Off); set { } }
     }
 }

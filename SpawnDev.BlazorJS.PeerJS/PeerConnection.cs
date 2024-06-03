@@ -45,6 +45,6 @@ namespace SpawnDev.BlazorJS.PeerJS
         /// <summary>
         /// Emitted when an error occurs
         /// </summary>
-        public JSEventCallback<JSObject> OnError { get => new JSEventCallback<JSObject>("error", On, Off); set { } }
+        public JSEventCallback<PeerError> OnError { get => new JSEventCallback<PeerError>("error", On, Off); set { } }
     }
 }
