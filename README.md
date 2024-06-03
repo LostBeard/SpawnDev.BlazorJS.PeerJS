@@ -1,8 +1,6 @@
 # SpawnDev.BlazorJS.PeerJS
 PeerJS simplifies peer-to-peer data, video, and audio calls.
 
-## WIP: Demo and Nuget will be up soon
-
 [![NuGet version](https://badge.fury.io/nu/SpawnDev.BlazorJS.PeerJS.svg?label=SpawnDev.BlazorJS.PeerJS)](https://www.nuget.org/packages/SpawnDev.BlazorJS.PeerJS)
 
 **SpawnDev.BlazorJS.PeerJS** brings the amazing [peerjs](https://github.com/peers/peerjs) library to Blazor WebAssembly.
