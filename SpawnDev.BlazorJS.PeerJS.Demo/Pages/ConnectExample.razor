@@ -35,10 +35,13 @@
     string msg = "";
     string log = "";
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (peer == null)
+        if (firstRender)
         {
+            // Load the PeerJS Javascript library.
+            // the library could also be loaded in the index.html instead
+            await Peer.Init();
             peer = new Peer();
             peer.OnOpen += Peer_OnOpen;
             peer.OnClose += Peer_OnClose;
