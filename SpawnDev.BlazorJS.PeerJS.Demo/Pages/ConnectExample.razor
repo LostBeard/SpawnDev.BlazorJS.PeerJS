@@ -8,7 +8,8 @@
 <PageTitle>Peer Test</PageTitle>
 
 <h1>PeerJS Test</h1>
-<small>Open two windows and copy the ID from one to the other and click connect</small><br/>
+<small>Open two windows and copy the ID from one to the other and click connect</small>
+<br />
 <a href target="_blank">Open in New Window</a>
 <br />
 
@@ -89,16 +90,20 @@
 
     void DataConnection_OnData(JSObject msg)
     {
-        Log("DataConnection_OnData");
         if (msg.JSRef!.PropertyInstanceOf() == "String")
         {
             Log(">> " + msg.JSRef!.As<string>());
+        }
+        else
+        {
+            Log("DataConnection_OnData: non-string data");
         }
     }
 
     void DataConnection_OnOpen()
     {
         Log("DataConnection_OnOpen");
+        Send($"Hello from {id}");
     }
 
     void DataConnection_OnClose()
@@ -119,12 +124,14 @@
         }
     }
 
-    void Send()
+    void Send(string msg)
     {
         if (dataConnection == null) return;
         dataConnection.Send(msg);
         Log($"<< {msg}");
     }
+
+    void Send() => Send(msg);
 
     void Peer_OnOpen(string id)
     {
