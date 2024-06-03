@@ -9,6 +9,69 @@ namespace SpawnDev.BlazorJS.PeerJS
     /// </summary>
     public class Peer : EventEmitter
     {
+        /// <summary>
+        /// PeerError types
+        /// </summary>
+        public static class ErrorType
+        {
+            /// <summary>
+            /// The client's browser does not support some or all WebRTC features that you are trying to use.<br/>
+            /// Fatal
+            /// </summary>
+            public const string BROWSER_INCOMPATIBLE = "browser-incompatible";
+            /// <summary>
+            /// You've already disconnected this peer from the server and can no longer make any new connections on it.
+            /// </summary>
+            public const string DISCONNECTED = "disconnected";
+            /// <summary>
+            /// The ID passed into the Peer constructor contains illegal characters.<br/>
+            /// Fatal
+            /// </summary>
+            public const string INVALID_ID = "invalid-id";
+            /// <summary>
+            /// The API key passed into the Peer constructor contains illegal characters or is not in the system (cloud server only).<br/>
+            /// Fatal
+            /// </summary>
+            public const string INVALID_KEY = "invalid-key";
+            /// <summary>
+            /// Lost or cannot establish a connection to the signaling server.
+            /// </summary>
+            public const string NETWORK = "network";
+            /// <summary>
+            /// The peer you're trying to connect to does not exist.
+            /// </summary>
+            public const string PEER_UNAVAILABLE = "peer-unavailable";
+            /// <summary>
+            /// PeerJS is being used securely, but the cloud server does not support SSL. Use a custom PeerServer.<br/>
+            /// Fatal
+            /// </summary>
+            public const string SSL_UNAVALABLE = "ssl-unavailable";
+            /// <summary>
+            /// Unable to reach the server.<br/>
+            /// Fatal
+            /// </summary>
+            public const string SERVER_ERROR = "server-error";
+            /// <summary>
+            /// An error from the underlying socket.<br/>
+            /// Fatal
+            /// </summary>
+            public const string SOCKET_ERROR = "socket-error";
+            /// <summary>
+            /// The underlying socket closed unexpectedly.<br/>
+            /// Fatal
+            /// </summary>
+            public const string SOCKET_CLOSED = "socket-closed";
+            /// <summary>
+            /// The ID passed into the Peer constructor is already taken.<br/>
+            /// This error is not fatal if your peer has open peer-to-peer connections. This can happen if you attempt to reconnect a peer that has been disconnected from the server, but its old ID has now been taken.<br/>
+            /// Sometimes Fatal
+            /// </summary>
+            public const string UNAVAILABLE_ID = "unavailable-id";
+            /// <summary>
+            /// Native WebRTC errors.
+            /// </summary>
+            public const string WEBRTC = "webrtc";
+        }
         static Task? _Init = null;
         /// <summary>
         /// Load the SimplePeer Javascript library
