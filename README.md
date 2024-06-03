@@ -56,7 +56,7 @@ Example Home.razor
 </div>
 <div>
     <input placeholder="Remote Id" style="width: 350px;" @bind=@targetId></input>
-    <button disabled="@(dataConnection != null)" @onclick=@Connect>connect</button>
+    <button @onclick=@Connect>connect</button>
 </div>
 <div>
     <input placeholder="message" style="width: 350px;" @bind=@msg></input>
@@ -66,7 +66,6 @@ Example Home.razor
 
 @code {
     [Inject] BlazorJSRuntime JS { get; set; }
-
     Peer? peer = null;
     DataConnection? dataConnection = null;
     string id = "";
@@ -109,7 +108,8 @@ Example Home.razor
 
     void Connect()
     {
-        if (peer == null || dataConnection != null) return;
+        if (peer == null) return;
+        DisposeDataConnection();
         Log("Connect");
         InitDataConnection(peer.Connect(targetId));
     }
@@ -122,6 +122,7 @@ Example Home.razor
         dataConnection.OnOpen += DataConnection_OnOpen;
         dataConnection.OnClose += DataConnection_OnClose;
         dataConnection.OnData += DataConnection_OnData;
+        dataConnection.OnError += DataConnection_OnError;
     }
 
     void DataConnection_OnData(JSObject msg)
@@ -148,6 +149,11 @@ Example Home.razor
         DisposeDataConnection();
     }
 
+    void DataConnection_OnError(PeerError error)
+    {
+        Log($"DataConnection_OnError: {error.Type}");
+    }
+
     void DisposeDataConnection()
     {
         if (dataConnection != null)
@@ -155,6 +161,7 @@ Example Home.razor
             dataConnection.OnOpen -= DataConnection_OnOpen;
             dataConnection.OnClose -= DataConnection_OnClose;
             dataConnection.OnData -= DataConnection_OnData;
+            dataConnection.OnError -= DataConnection_OnError;
             dataConnection.Dispose();
             dataConnection = null;
         }
@@ -181,11 +188,9 @@ Example Home.razor
         Log("Peer_OnClose");
     }
 
-    void Peer_OnError(JSObject error)
+    void Peer_OnError(PeerError error)
     {
-        JS.Log("_error", error);
-        JS.Set("_error", error);
-        StateHasChanged();
+        Log($"Peer_OnError: {error.Type}");
     }
 
     public void Dispose()

@@ -5,7 +5,7 @@
 @using SpawnDev.BlazorJS.JSObjects.WebRTC;
 @implements IDisposable
 
-<PageTitle>Peer Test</PageTitle>
+<PageTitle>PeerJS Test</PageTitle>
 
 <h1>PeerJS Test</h1>
 <small>Open two windows and copy the ID from one to the other and click connect</small>
@@ -18,7 +18,7 @@
 </div>
 <div>
     <input placeholder="Remote Id" style="width: 350px;" @bind=@targetId></input>
-    <button disabled="@(dataConnection != null)" @onclick=@Connect>connect</button>
+    <button @onclick=@Connect>connect</button>
 </div>
 <div>
     <input placeholder="message" style="width: 350px;" @bind=@msg></input>
@@ -28,7 +28,6 @@
 
 @code {
     [Inject] BlazorJSRuntime JS { get; set; }
-
     Peer? peer = null;
     DataConnection? dataConnection = null;
     string id = "";
@@ -49,8 +48,6 @@
             peer.OnError += Peer_OnError;
             peer.OnConnection += Peer_OnConnection;
             peer.OnCall += Peer_OnCall;
-            // sets _peer global var for debugging in dev tools
-            JS.Set("_peer", peer);
         }
     }
 
@@ -73,7 +70,8 @@
 
     void Connect()
     {
-        if (peer == null || dataConnection != null) return;
+        if (peer == null) return;
+        DisposeDataConnection();
         Log("Connect");
         InitDataConnection(peer.Connect(targetId));
     }
