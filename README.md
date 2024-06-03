@@ -35,7 +35,6 @@ await builder.Build().BlazorJSRunAsync();
 ```
 
 Example Home.razor  
-Open two windows and copy the ID from one to the other and click connect  
 ```cs
 @page "/"
 @using SpawnDev.BlazorJS.JSObjects;

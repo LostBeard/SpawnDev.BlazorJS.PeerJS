@@ -11,7 +11,7 @@
 		<DebugType>Embedded</DebugType>
 		<Title>SpawnDev.BlazorJS.PeerJS</Title>
 		<Authors>LostBeard</Authors>
-		<Description>PeerJS WebRTC video, voice, and data channels for Blazor WebAssembly</Description>
+		<Description>PeerJS simplifies peer-to-peer data, video, and audio calls in Blazor WebAssembly</Description>
 		<PackageProjectUrl>https://github.com/LostBeard/SpawnDev.BlazorJS.PeerJS</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
