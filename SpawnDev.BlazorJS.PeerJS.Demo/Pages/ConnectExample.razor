@@ -11,28 +11,34 @@
 
 <small>Open two windows and copy the ID from one to the other and click connect</small>
 <br />
-<a href target="_blank">Open in New Window</a>
+<a href="@($"?targetId={id}")" target="_blank">Open in new window</a>
 <br />
 
 <div>
-    <input style="width: 350px;" @bind=@id readonly></input>
+    <input style="width: 350px;" @bind=@id readonly />
 </div>
 <div>
-    <input placeholder="Remote Id" style="width: 350px;" @bind=@targetId></input>
+    <input placeholder="Remote Id" style="width: 350px;" @bind=@targetId />
     <button @onclick=@Connect>connect</button>
 </div>
 <div>
-    <input placeholder="message" style="width: 350px;" @bind=@msg></input>
+    <input placeholder="message" style="width: 350px;" @bind=@msg />
     <button @onclick=@Send>send</button>
 </div>
+<div>
+    <span>Connect using QRCode from <a href="https://github.com/LostBeard/SpawnDev.Blazor.QRCodeRenderer">SpawnDev.Blazor.QRCodeRenderer</a></span><br />
+    <QRCodeImage DataTextType="DataTextType.UriRelativeUrl" DataText="@($"?targetId={id}")" />
+</div>
 <pre style="width: 600px; word-wrap: break-word; white-space: normal;">@((MarkupString)log)</pre>
+
 
 @code {
     [Inject] BlazorJSRuntime JS { get; set; }
     Peer? peer = null;
     DataConnection? dataConnection = null;
     string id = "";
-    string targetId = "";
+    [SupplyParameterFromQuery]
+    string targetId { get; set; } = "";
     string msg = "";
     string log = "";
 
@@ -144,6 +150,7 @@
         this.id = id;
         Log($"Peer_OnOpen: {id}");
         StateHasChanged();
+        if (!string.IsNullOrEmpty(targetId)) Connect();
     }
 
     void Peer_OnClose()

@@ -11,6 +11,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.6" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.6" PrivateAssets="all" />
+		<PackageReference Include="SpawnDev.Blazor.QRCodeRenderer" Version="1.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
