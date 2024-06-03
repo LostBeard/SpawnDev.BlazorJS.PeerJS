@@ -82,7 +82,7 @@ Open two windows and copy the ID from one to the other and click connect
         if (firstRender)
         {
             // Load the PeerJS Javascript library.
-            // the library could also be loaded in the index.html instead
+            // the library can be loaded in the index.html instead
             await Peer.Init();
             peer = new Peer();
             peer.OnOpen += Peer_OnOpen;
