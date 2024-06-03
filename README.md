@@ -87,8 +87,6 @@ Example Home.razor
             peer.OnError += Peer_OnError;
             peer.OnConnection += Peer_OnConnection;
             peer.OnCall += Peer_OnCall;
-            // sets _peer global var for debugging in dev tools
-            JS.Set("_peer", peer);
         }
     }
 
