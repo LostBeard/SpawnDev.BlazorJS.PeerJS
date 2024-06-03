@@ -7,8 +7,8 @@ PeerJS simplifies peer-to-peer data, video, and audio calls.
 
 **SpawnDev.BlazorJS.PeerJS** uses [SpawnDev.BlazorJS](https://github.com/LostBeard/SpawnDev.BlazorJS) for Javascript interop allowing strongly typed, full usage of the [peerjs](https://github.com/peers/peerjs) Javascript library. Voice, video and data channels are all fully supported in Blazor WebAssembly. The **SpawnDev.BlazorJS.PeerJS** API is a strongly typed version of the API found at the [peerjs](https://github.com/peers/peerjs) repo. 
 
-### Demo (Coming soon)
-[Simple Demo](https://lostbeard.github.io/SpawnDev.BlazorJS.PeerJS/)
+### Demo
+[Basic Demo](https://lostbeard.github.io/SpawnDev.BlazorJS.PeerJS/)
 
 ### Getting started
 
