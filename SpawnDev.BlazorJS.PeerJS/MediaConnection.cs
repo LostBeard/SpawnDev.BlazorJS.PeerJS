@@ -10,6 +10,10 @@ namespace SpawnDev.BlazorJS.PeerJS
     public class MediaConnection : PeerConnection
     {
         /// <summary>
+        /// The value used for connections of this type
+        /// </summary>
+        public static string ConnectionType { get; } = "media";
+        /// <summary>
         /// Deserialization constructor
         /// </summary>
         /// <param name="_ref"></param>

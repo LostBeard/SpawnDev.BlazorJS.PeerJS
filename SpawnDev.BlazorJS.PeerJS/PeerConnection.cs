@@ -5,7 +5,7 @@ namespace SpawnDev.BlazorJS.PeerJS
     /// <summary>
     /// Base class for MediaConnection and DataConnection
     /// </summary>
-    public abstract class PeerConnection : EventEmitter
+    public class PeerConnection : EventEmitter
     {
         /// <summary>
         /// Deserialization constructor
