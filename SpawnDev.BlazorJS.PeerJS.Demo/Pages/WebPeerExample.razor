@@ -43,7 +43,7 @@
     string targetId { get; set; } = "";
     string msg = "";
     string log = "";
-    WebPeer? peerDispatcher = null;
+    WebPeer? webPeer = null;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -106,7 +106,7 @@
         dataConnection.OnData += DataConnection_OnData;
         dataConnection.OnError += DataConnection_OnError;
         // dispatcher
-        peerDispatcher ??= new WebPeer(ServiceProvider, peer!, dataConnection);
+        webPeer ??= new WebPeer(ServiceProvider, peer!, dataConnection);
     }
 
     void DataConnection_OnData(JSObject msg)
@@ -135,24 +135,24 @@
 
     void DisposeDataConnection()
     {
-        if (peerDispatcher != null)
+        if (webPeer != null)
         {
-            peerDispatcher.DataConnection!.OnOpen -= DataConnection_OnOpen;
-            peerDispatcher.DataConnection!.OnClose -= DataConnection_OnClose;
-            peerDispatcher.DataConnection!.OnData -= DataConnection_OnData;
-            peerDispatcher.DataConnection!.OnError -= DataConnection_OnError;
-            peerDispatcher.DataConnection!.Dispose();
-            peerDispatcher.Dispose();
-            peerDispatcher = null;
+            webPeer.DataConnection!.OnOpen -= DataConnection_OnOpen;
+            webPeer.DataConnection!.OnClose -= DataConnection_OnClose;
+            webPeer.DataConnection!.OnData -= DataConnection_OnData;
+            webPeer.DataConnection!.OnError -= DataConnection_OnError;
+            webPeer.DataConnection!.Dispose();
+            webPeer.Dispose();
+            webPeer = null;
         }
     }
 
     async Task CallMethodTest()
     {
-        if (peerDispatcher == null) return;
+        if (webPeer == null) return;
         try
         {
-            var logIgRet = await peerDispatcher!.Run(() => ConsoleLog("remote log", null));
+            var logIgRet = await webPeer!.Run(() => ConsoleLog("remote log", null));
             Log($"logIgRet: {logIgRet}");
         }
         catch (Exception ex)

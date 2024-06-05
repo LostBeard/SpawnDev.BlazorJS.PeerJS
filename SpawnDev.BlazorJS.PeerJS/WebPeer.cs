@@ -6,29 +6,7 @@ using Array = SpawnDev.BlazorJS.JSObjects.Array;
 namespace SpawnDev.BlazorJS.PeerJS
 {
     /// <summary>
-    /// Method parameters marked with the CallSide attribute will be resolved on the called side
-    /// </summary>
-    [System.AttributeUsage(System.AttributeTargets.Parameter)]
-    public class CallSideAttribute : Attribute { }
-    /// <summary>
-    /// Method parameters marked with the FromServices attribute will be resolved from the called side peer service provider
-    /// </summary>
-    [System.AttributeUsage(System.AttributeTargets.Parameter)]
-    public class FromServicesAttribute : Attribute { }
-    /// <summary>
-    /// Used to mark methods as callable
-    /// </summary>
-    [System.AttributeUsage(System.AttributeTargets.Method)]
-    public class PeerCallableAttribute : Attribute
-    {
-        /// <summary>
-        /// Methods with the PeerCallable attribute and NoReply = true will not send exceptions or results back to the caller<br/>
-        /// That makes NoReply calls quicker
-        /// </summary>
-        public bool NoReply { get; set; }
-    }
-    /// <summary>
-    /// 
+    /// Client and server implementation for remotely calling .Net methods using SimplePeer
     /// </summary>
     public class WebPeer : AsyncCallDispatcher, IDisposable
     {
