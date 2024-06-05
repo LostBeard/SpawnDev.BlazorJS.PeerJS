@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.JSInterop;
-using SpawnDev.BlazorJS.JSObjects;
+﻿using Microsoft.JSInterop;
 
 namespace SpawnDev.BlazorJS.PeerJS
 {

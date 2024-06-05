@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/WebPeerExample"
 @using SpawnDev.BlazorJS.JSObjects;
 @using System.Text;
 @using System.Text.Json;
@@ -24,8 +24,7 @@
     <button @onclick=@Connect>connect</button>
 </div>
 <div>
-    <input placeholder="message" style="width: 350px;" @bind=@msg />
-    <button @onclick=@Send>send</button>
+    <button @onclick=@CallMethodTest>call method</button>
 </div>
 <div>
     <span>Connect using QRCode from <a href="https://github.com/LostBeard/SpawnDev.Blazor.QRCodeRenderer">SpawnDev.Blazor.QRCodeRenderer</a></span><br />
@@ -39,12 +38,12 @@
     [Inject] BlazorJSRuntime JS { get; set; }
     [Inject] IServiceProvider ServiceProvider { get; set; }
     Peer? peer = null;
-    DataConnection? dataConnection = null;
     string id = "";
     [SupplyParameterFromQuery]
     string targetId { get; set; } = "";
     string msg = "";
     string log = "";
+    WebPeer? peerDispatcher = null;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -58,7 +57,7 @@
             peer.OnClose += Peer_OnClose;
             peer.OnError += Peer_OnError;
             peer.OnConnection += Peer_OnConnection;
-            peer.OnCall += Peer_OnCall;
+            InstanceConsoleLog = Log;
         }
     }
 
@@ -86,15 +85,28 @@
         InitDataConnection(peer.Connect(targetId));
     }
 
+    static long logId = 0;
+
+    [PeerCallable]
+    static long ConsoleLog(string msg, [CallSide] WebPeer? peer = null)
+    {
+        var fromPeer = peer?.DataConnection?.Peer ?? "[NO_ID]";
+        InstanceConsoleLog?.Invoke($"ConsoleLog: {logId} {fromPeer} {msg}");
+        return logId++;
+    }
+
+    static Action<string>? InstanceConsoleLog = null;
+
     void InitDataConnection(DataConnection dataConnection)
     {
         DisposeDataConnection();
-        this.dataConnection = dataConnection;
         Log($"InitDataConnection: {dataConnection.Label}");
         dataConnection.OnOpen += DataConnection_OnOpen;
         dataConnection.OnClose += DataConnection_OnClose;
         dataConnection.OnData += DataConnection_OnData;
         dataConnection.OnError += DataConnection_OnError;
+        // dispatcher
+        peerDispatcher ??= new WebPeer(ServiceProvider, peer!, dataConnection);
     }
 
     void DataConnection_OnData(JSObject msg)
@@ -108,7 +120,6 @@
     void DataConnection_OnOpen()
     {
         Log("DataConnection_OnOpen");
-        Send($"Hello from {id}");
     }
 
     void DataConnection_OnClose()
@@ -124,25 +135,31 @@
 
     void DisposeDataConnection()
     {
-        if (dataConnection != null)
+        if (peerDispatcher != null)
         {
-            dataConnection.OnOpen -= DataConnection_OnOpen;
-            dataConnection.OnClose -= DataConnection_OnClose;
-            dataConnection.OnData -= DataConnection_OnData;
-            dataConnection.OnError -= DataConnection_OnError;
-            dataConnection.Dispose();
-            dataConnection = null;
+            peerDispatcher.DataConnection!.OnOpen -= DataConnection_OnOpen;
+            peerDispatcher.DataConnection!.OnClose -= DataConnection_OnClose;
+            peerDispatcher.DataConnection!.OnData -= DataConnection_OnData;
+            peerDispatcher.DataConnection!.OnError -= DataConnection_OnError;
+            peerDispatcher.DataConnection!.Dispose();
+            peerDispatcher.Dispose();
+            peerDispatcher = null;
         }
     }
 
-    void Send(string msg)
+    async Task CallMethodTest()
     {
-        if (dataConnection == null) return;
-        dataConnection.Send(msg);
-        Log($"<< {msg}");
+        if (peerDispatcher == null) return;
+        try
+        {
+            var logIgRet = await peerDispatcher!.Run(() => ConsoleLog("remote log", null));
+            Log($"logIgRet: {logIgRet}");
+        }
+        catch (Exception ex)
+        {
+            JS.Log($"CallMethodTest error: {ex.Message}");
+        }
     }
-
-    void Send() => Send(msg);
 
     void Peer_OnOpen(string id)
     {
@@ -164,6 +181,7 @@
 
     public void Dispose()
     {
+        InstanceConsoleLog = null;
         DisposeDataConnection();
         if (peer != null)
         {
