@@ -5,6 +5,7 @@
 @using SpawnDev.BlazorJS.JSObjects.WebRTC;
 @using SpawnDev.BlazorJS.Reflection;
 @using System.Reflection;
+@using System.Security.Claims;
 @implements IDisposable
 
 <PageTitle>SpawnDev.BlazorJS.PeerJS</PageTitle>
@@ -24,7 +25,10 @@
     <button @onclick=@Connect>connect</button>
 </div>
 <div>
-    <button @onclick=@CallMethodTest>call method</button>
+    <button @onclick=@CallWebPeerStaticMethodTest>call method</button>
+</div>
+<div>
+    <button @onclick=@CallWebPeerStaticMethodTest>call method</button>
 </div>
 <div>
     <span>Connect using QRCode from <a href="https://github.com/LostBeard/SpawnDev.Blazor.QRCodeRenderer">SpawnDev.Blazor.QRCodeRenderer</a></span><br />
@@ -44,6 +48,7 @@
     string msg = "";
     string log = "";
     WebPeer? webPeer = null;
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -87,12 +92,28 @@
 
     static long logId = 0;
 
-    [PeerCallable]
-    static long ConsoleLog(string msg, [CallSide] WebPeer? peer = null)
+    [RemoteCallable(Roles = "Administrator, Moderator, User")]
+    static long ConsoleLog(string msg, [FromLocal] WebPeer? peer = null)
     {
-        var fromPeer = peer?.DataConnection?.Peer ?? "[NO_ID]";
+        var fromPeer = peer?.User.Claims.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value ?? "[NO_ID]";
         InstanceConsoleLog?.Invoke($"ConsoleLog: {logId} {fromPeer} {msg}");
         return logId++;
+    }
+
+    async Task CallWebPeerStaticMethodTest()
+    {
+        if (webPeer == null) return;
+        try
+        {
+            await webPeer.WhenReady.WaitAsync(TimeSpan.FromMilliseconds(3000));
+            // call the static method ConsoleLog on the remote peer. [CallSide] attribute parameters will be filled on the other side.
+            var logIgRet = await webPeer.Run(() => ConsoleLog("remote log", default));
+            Log($"logIgRet: {logIgRet}");
+        }
+        catch (Exception ex)
+        {
+            JS.Log($"CallMethodTest error: {ex.Message}");
+        }
     }
 
     static Action<string>? InstanceConsoleLog = null;
@@ -101,63 +122,17 @@
     {
         DisposeDataConnection();
         Log($"InitDataConnection: {dataConnection.Label}");
-        dataConnection.OnOpen += DataConnection_OnOpen;
-        dataConnection.OnClose += DataConnection_OnClose;
-        dataConnection.OnData += DataConnection_OnData;
-        dataConnection.OnError += DataConnection_OnError;
         // dispatcher
-        webPeer ??= new WebPeer(ServiceProvider, peer!, dataConnection);
-    }
-
-    void DataConnection_OnData(JSObject msg)
-    {
-        if (msg.JSRef!.PropertyInstanceOf() == "String")
-        {
-            Log(">> " + msg.JSRefAs<string>());
-        }
-    }
-
-    void DataConnection_OnOpen()
-    {
-        Log("DataConnection_OnOpen");
-    }
-
-    void DataConnection_OnClose()
-    {
-        Log("DataConnection_OnClose");
-        DisposeDataConnection();
-    }
-
-    void DataConnection_OnError(PeerError error)
-    {
-        Log($"DataConnection_OnError: {error.Type}");
+        webPeer = new WebPeer(ServiceProvider, peer!, dataConnection);
+        _ = CallWebPeerStaticMethodTest();
     }
 
     void DisposeDataConnection()
     {
         if (webPeer != null)
         {
-            webPeer.DataConnection!.OnOpen -= DataConnection_OnOpen;
-            webPeer.DataConnection!.OnClose -= DataConnection_OnClose;
-            webPeer.DataConnection!.OnData -= DataConnection_OnData;
-            webPeer.DataConnection!.OnError -= DataConnection_OnError;
-            webPeer.DataConnection!.Dispose();
             webPeer.Dispose();
             webPeer = null;
-        }
-    }
-
-    async Task CallMethodTest()
-    {
-        if (webPeer == null) return;
-        try
-        {
-            var logIgRet = await webPeer!.Run(() => ConsoleLog("remote log", null));
-            Log($"logIgRet: {logIgRet}");
-        }
-        catch (Exception ex)
-        {
-            JS.Log($"CallMethodTest error: {ex.Message}");
         }
     }
 

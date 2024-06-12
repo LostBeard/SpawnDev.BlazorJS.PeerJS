@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.34929.205
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpawnDev.BlazorJS.PeerJS", "SpawnDev.BlazorJS.PeerJS\SpawnDev.BlazorJS.PeerJS.csproj", "{0CB15D4D-1907-41CA-AE64-E641B2625B63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpawnDev.BlazorJS.PeerJS", "SpawnDev.BlazorJS.PeerJS\SpawnDev.BlazorJS.PeerJS.csproj", "{0CB15D4D-1907-41CA-AE64-E641B2625B63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpawnDev.BlazorJS.PeerJS.Demo", "SpawnDev.BlazorJS.PeerJS.Demo\SpawnDev.BlazorJS.PeerJS.Demo.csproj", "{87422002-F886-44A1-B586-FB3B10170C8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpawnDev.BlazorJS.PeerJS.Demo", "SpawnDev.BlazorJS.PeerJS.Demo\SpawnDev.BlazorJS.PeerJS.Demo.csproj", "{87422002-F886-44A1-B586-FB3B10170C8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
