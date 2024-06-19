@@ -45,7 +45,7 @@ var peer = new Peer("pick-an-id");
 ```cs
 var conn = peer.Connect("another-peers-id");
 conn.OnOpen += () => {
-	conn.Send("hi!");
+  conn.Send("hi!");
 };
 ```
 
@@ -53,14 +53,14 @@ conn.OnOpen += () => {
 
 ```cs
 peer.OnConnection += (DataConnection conn) => {
-	conn.OnData += (JSObject data) => {
-        // data is of type JSObject, which can be any type. imported as string here.
-		// Will print 'hi!'
-		Console.WriteLine(data.JSRefAs<string>());
-	};
-	conn.OnOpen += () => {
-		conn.Send("hello!");
-	};
+  conn.OnData += (JSObject data) => {
+    // data is of type JSObject, which can be any type. imported as string here.
+    // Will print 'hi!'
+    Console.WriteLine(data.JSRefAs<string>());
+  };
+  conn.OnOpen += () => {
+    conn.Send("hello!");
+  };
 };
 ```
 
