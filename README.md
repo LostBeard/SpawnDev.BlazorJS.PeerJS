@@ -73,7 +73,7 @@ using var mediaDevices = navigator.MediaDevices;
 using var stream = await mediaDevices.GetUserMedia(new { video = true, audio = true });
 MediaConnection call = peer.Call("another-peers-id", stream);
 call.OnStream += (MediaStream remoteStream) => {
-	// Show stream in some <video> element.
+  // Show stream in some <video> element.
 };
 ```
 
@@ -85,8 +85,8 @@ peer.OnCall += async (MediaConnection call) => {
     using var mediaDevices = navigator.MediaDevices;
     using var stream = await mediaDevices.GetUserMedia(new { video = true, audio = true });
     call.Answer(stream); // Answer the call with an A/V stream.
-	call.OnStream += (MediaStream remoteStream) => {
-	    // Show stream in some <video> element.
+    call.OnStream += (MediaStream remoteStream) => {
+      // Show stream in some <video> element.
     };
 };
 ```
