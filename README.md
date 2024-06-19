@@ -98,17 +98,14 @@ Example Program.cs
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using SpawnDev.BlazorJS;
-using SpawnDev.BlazorJS.PeerJS;
 using SpawnDev.BlazorJS.PeerJS.Demo;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
-
-// Add SpawnDev.BlazorJS interop service: BlazorJSRuntime
+// Add SpawnDev.BlazorJS interop
 builder.Services.AddBlazorJSRuntime();
-
-// Run app using BlazorJSRunAsync extension method
+// Run app using BlazorJSRunAsync
 await builder.Build().BlazorJSRunAsync();
 ```
 
