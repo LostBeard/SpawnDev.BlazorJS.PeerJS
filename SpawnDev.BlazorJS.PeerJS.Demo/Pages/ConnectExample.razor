@@ -22,10 +22,15 @@
 <div>
     <input placeholder="Remote Id" style="width: 350px;" @bind=@targetId />
     <button @onclick=@Connect>connect</button>
+    <button @onclick=@StartMediaCall>call</button>
 </div>
 <div>
     <input placeholder="message" style="width: 350px;" @bind=@msg />
     <button @onclick=@Send>send</button>
+</div>
+<div style="width: 320px; height: 240px; position: relative;">
+    <video style="border: 1px solid black; height: 100%; width: 100%;" width="320" @ref="incomingVideoElRef" autoplay></video>
+    <video style="border: 1px solid orange; height: 40px; width: 60px; position: absolute; right: 10px; bottom: 10px;" @ref="outgoingVideoElRef" autoplay></video>
 </div>
 <div>
     <span>Connect using QRCode from <a href="https://github.com/LostBeard/SpawnDev.Blazor.QRCodeRenderer">SpawnDev.Blazor.QRCodeRenderer</a></span><br />
@@ -34,6 +39,10 @@
 <pre style="width: 600px; word-wrap: break-word; white-space: normal;">@((MarkupString)log)</pre>
 
 @code {
+    ElementReference outgoingVideoElRef;
+    ElementReference incomingVideoElRef;
+    HTMLVideoElement? outgoingVideoEl = null;
+    HTMLVideoElement? incomingVideoEl = null;
     [Inject] NavigationManager NavigationManager { get; set; }
     [Inject] BlazorJSRuntime JS { get; set; }
     [Inject] IServiceProvider ServiceProvider { get; set; }
@@ -44,6 +53,9 @@
     string targetId { get; set; } = "";
     string msg = "";
     string log = "";
+    MediaConnection? call = null;
+    MediaStream? outgoingCallStream = null;
+    MediaStream? incomingCallStream = null;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -58,7 +70,50 @@
             peer.OnError += Peer_OnError;
             peer.OnConnection += Peer_OnConnection;
             peer.OnCall += Peer_OnCall;
+            // get video element references
+            outgoingVideoEl = new HTMLVideoElement(outgoingVideoElRef);
+            incomingVideoEl = new HTMLVideoElement(incomingVideoElRef);
         }
+    }
+
+    async Task StopMediaCall()
+    {
+        if (call == null) return;
+        call.Close();
+        call.Dispose();
+        call = null;
+    }
+
+    async Task StartLocalMediaStream()
+    {
+        if (outgoingCallStream != null) return;
+        try
+        {
+            using var navigator = JS.Get<Navigator>("navigator");
+            using var mediaDevices = navigator.MediaDevices;
+            outgoingCallStream = await mediaDevices.GetUserMedia(new { video = true, audio = true });
+            outgoingVideoEl!.SrcObject = outgoingCallStream!;
+        }
+        catch (Exception ex)
+        {
+            log += $"Failed to get local stream<br/>";
+        }
+    } 
+
+    async Task StartMediaCall()
+    {
+        if (peer == null) return;
+        if (call != null) return;
+        await StartLocalMediaStream();
+        if (outgoingCallStream == null) return;
+        var outgoingCall = peer.Call(targetId, outgoingCallStream);
+        _ = InitMediaConnection(outgoingCall, false);
+    }
+
+    void Call_OnStream(MediaStream mediaStream)
+    {
+        incomingCallStream = mediaStream;
+        incomingVideoEl!.SrcObject = incomingCallStream!;
     }
 
     void Log(string msg)
@@ -70,12 +125,28 @@
     void Peer_OnConnection(DataConnection dataConnection)
     {
         Log("Peer_OnConnection");
+        if (targetId != dataConnection.Peer) targetId = dataConnection.Peer;
         InitDataConnection(dataConnection);
+        StateHasChanged();
+    }
+
+    async Task InitMediaConnection(MediaConnection mediaConnection, bool incoming)
+    {
+        call = mediaConnection;
+        call.OnStream += Call_OnStream;
+        if (incoming)
+        {
+            await StartLocalMediaStream();
+            call.Answer(outgoingCallStream);
+        }
     }
 
     void Peer_OnCall(MediaConnection mediaConnection)
     {
         Log($"Peer_OnCall: {mediaConnection.Type}");
+        if (targetId != mediaConnection.Peer) targetId = mediaConnection.Peer;
+        _ = InitMediaConnection(mediaConnection, true);
+        StateHasChanged();
     }
 
     void Connect()
