@@ -10,7 +10,7 @@ PeerJS simplifies peer-to-peer data, video, and audio calls.
 ### Demo
 [Basic Demo](https://lostbeard.github.io/SpawnDev.BlazorJS.PeerJS/)
 
-### Setup
+## Setup
 
 **Add the Nuget package**  
 In project folder  
@@ -63,9 +63,35 @@ peer.OnConnection += (DataConnection conn) => {
   };
 };
 ```
+## Media calls
 
+**Call**
 
-### Example
+```cs
+using var navigator = JS.Get<Navigator>("navigator");
+using var mediaDevices = navigator.MediaDevices;
+using var stream = await mediaDevices.GetUserMedia(new { video = true, audio = true });
+MediaConnection call = peer.Call("another-peers-id", stream);
+call.OnStream += (MediaStream remoteStream) => {
+	// Show stream in some <video> element.
+};
+```
+
+**Answer**
+
+```cs
+peer.OnCall += async (MediaConnection call) => {
+    using var navigator = JS.Get<Navigator>("navigator");
+    using var mediaDevices = navigator.MediaDevices;
+    using var stream = await mediaDevices.GetUserMedia(new { video = true, audio = true });
+    call.Answer(stream); // Answer the call with an A/V stream.
+	call.OnStream += (MediaStream remoteStream) => {
+	    // Show stream in some <video> element.
+    };
+};
+```
+
+## Example
 Modify the Blazor WASM `Program.cs` to initialize SpawnDev.BlazorJS for Javascript interop.  
 Example Program.cs   
 ```cs
