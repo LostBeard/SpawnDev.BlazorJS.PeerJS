@@ -18,7 +18,7 @@ nuget install SpawnDev.BlazorJS.PeerJS
 ```
 
 **Add BlazorJSRuntime service**  
-Add BlazorJSRuntime service to Blazor WASM `Program.cs`
+Blazor WASM `Program.cs`
 ```cs
 builder.Services.AddBlazorJSRuntime();
 ```
