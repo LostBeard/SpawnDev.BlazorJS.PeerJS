@@ -12,18 +12,18 @@ PeerJS simplifies peer-to-peer data, video, and audio calls.
 
 ### Setup
 
-**Add the Nuget package**
+**Add the Nuget package**  
 ```nuget
 nuget install SpawnDev.BlazorJS.PeerJS
 ```
 
-**Add BlazorJSRuntime service**
+**Add BlazorJSRuntime service**  
 Add BlazorJSRuntime service to Blazor WASM `Program.cs`
 ```cs
 builder.Services.AddBlazorJSRuntime();
 ```
 
-**Add BlazorJSRuntime service**
+**Add BlazorJSRuntime service**  
 Load PeerJS Javascript library in `index.html`  
 ```html
 <script src="_content/SpawnDev.BlazorJS.PeerJS/peerjs.min.js"></script>
