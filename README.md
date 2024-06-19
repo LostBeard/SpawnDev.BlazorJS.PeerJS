@@ -10,10 +10,61 @@ PeerJS simplifies peer-to-peer data, video, and audio calls.
 ### Demo
 [Basic Demo](https://lostbeard.github.io/SpawnDev.BlazorJS.PeerJS/)
 
-### Getting started
+### Setup
 
-Add the Nuget package `SpawnDev.BlazorJS.PeerJS` to your project using your package manager of choice.
+**Add the Nuget package**
+```nuget
+nuget install SpawnDev.BlazorJS.PeerJS
+```
 
+**Add BlazorJSRuntime service**
+Add BlazorJSRuntime service to Blazor WASM `Program.cs`
+```cs
+builder.Services.AddBlazorJSRuntime();
+```
+
+**Add BlazorJSRuntime service**
+Load PeerJS Javascript library in `index.html`  
+```html
+<script src="_content/SpawnDev.BlazorJS.PeerJS/peerjs.min.js"></script>
+```
+(Alternatively `await Peer.Init()` can be used in C# to load the PeerJS library at runtime)  
+
+**Create a Peer**
+
+```cs
+var peer = new Peer("pick-an-id");
+// You can pick your own id or omit the id if you want to get a random one from the server.
+```
+
+## Data connections
+
+**Connect**
+
+```cs
+var conn = peer.Connect("another-peers-id");
+conn.OnOpen += () => {
+	conn.Send("hi!");
+};
+```
+
+**Receive**
+
+```cs
+peer.OnConnection += (DataConnection conn) => {
+	conn.OnData += (JSObject data) => {
+        // data is of type JSObject, which can be any type. imported as string here.
+		// Will print 'hi!'
+		Console.WriteLine(data.JSRefAs<string>());
+	};
+	conn.OnOpen += () => {
+		conn.Send("hello!");
+	};
+};
+```
+
+
+### Example
 Modify the Blazor WASM `Program.cs` to initialize SpawnDev.BlazorJS for Javascript interop.  
 Example Program.cs   
 ```cs
@@ -27,7 +78,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-// Add SpawnDev.BlazorJS interop
+// Add SpawnDev.BlazorJS interop service: BlazorJSRuntime
 builder.Services.AddBlazorJSRuntime();
 
 // Run app using BlazorJSRunAsync extension method
