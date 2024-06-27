@@ -11,11 +11,15 @@ PeerJS simplifies peer-to-peer data, video, and audio calls.
 [Basic Demo](https://lostbeard.github.io/SpawnDev.BlazorJS.PeerJS/)
 
 ## Setup
+**Create a new Blazor WebAssembly project**  
+In the folder you created for your new project:
+```dotnet
+dotnet new blazorwasm
+```
 
 **Add the Nuget package**  
-In project folder  
 ```nuget
-nuget install SpawnDev.BlazorJS.PeerJS
+dotnet add package SpawnDev.BlazorJS.PeerJS
 ```
 
 **Add BlazorJSRuntime service**  
