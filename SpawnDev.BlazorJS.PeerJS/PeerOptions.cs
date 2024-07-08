@@ -10,6 +10,12 @@ namespace SpawnDev.BlazorJS.PeerJS
     public class PeerOptions
     {
         /// <summary>
+        /// Optional token that can be used for authentication on the PeerServer<br/>
+        /// peerServer.on('connection', (client) => { console.log('client.token:', client.token); })
+        /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? Token { get; set; }
+        /// <summary>
         /// API key for the cloud PeerServer. This is not used for servers other than 0.peerjs.com.<br/>
         /// PeerServer cloud runs on port 443. Please ensure it is not blocked or consider running your own PeerServer instead.
         /// </summary>
