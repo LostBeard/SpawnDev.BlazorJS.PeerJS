@@ -91,14 +91,14 @@
         {
             using var navigator = JS.Get<Navigator>("navigator");
             using var mediaDevices = navigator.MediaDevices;
-            outgoingCallStream = await mediaDevices.GetUserMedia(new { video = true, audio = true });
+            outgoingCallStream = await mediaDevices.GetUserMedia(true, true);
             outgoingVideoEl!.SrcObject = outgoingCallStream!;
         }
         catch (Exception ex)
         {
             log += $"Failed to get local stream<br/>";
         }
-    } 
+    }
 
     async Task StartMediaCall()
     {
