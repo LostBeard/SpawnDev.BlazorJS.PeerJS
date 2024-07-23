@@ -91,7 +91,7 @@
         {
             using var navigator = JS.Get<Navigator>("navigator");
             using var mediaDevices = navigator.MediaDevices;
-            outgoingCallStream = await mediaDevices.GetUserMedia(true, true);
+            outgoingCallStream = await mediaDevices.GetUserMedia(true, false);
             outgoingVideoEl!.SrcObject = outgoingCallStream!;
         }
         catch (Exception ex)
@@ -107,7 +107,7 @@
         await StartLocalMediaStream();
         if (outgoingCallStream == null) return;
         var outgoingCall = peer.Call(targetId, outgoingCallStream);
-        _ = InitMediaConnection(outgoingCall, false);
+        await InitMediaConnection(outgoingCall, false);
     }
 
     void Call_OnStream(MediaStream mediaStream)
