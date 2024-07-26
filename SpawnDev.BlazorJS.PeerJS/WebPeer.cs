@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SpawnDev.BlazorJS.Reflection;
+using SpawnDev.BlazorJS.WebWorkers;
 using System.Reflection;
 using Array = SpawnDev.BlazorJS.JSObjects.Array;
 
