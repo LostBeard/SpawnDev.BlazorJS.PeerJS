@@ -3,7 +3,7 @@
 @using System.Text;
 @using System.Text.Json;
 @using SpawnDev.BlazorJS.JSObjects.WebRTC;
-@using SpawnDev.BlazorJS.Reflection;
+@using SpawnDev.BlazorJS.Toolbox;
 @using System.Reflection;
 @using System.Security.Claims;
 @implements IDisposable
@@ -92,8 +92,8 @@
 
     static long logId = 0;
 
-    [RemoteCallable(Roles = "Administrator, Moderator, User")]
-    static long ConsoleLog(string msg, [FromLocal] WebPeer? peer = null)
+    //[RemoteCallable(Roles = "Administrator, Moderator, User")]
+    static long ConsoleLog(string msg, WebPeer? peer = null)
     {
         var fromPeer = peer?.User.Claims.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value ?? "[NO_ID]";
         InstanceConsoleLog?.Invoke($"ConsoleLog: {logId} {fromPeer} {msg}");

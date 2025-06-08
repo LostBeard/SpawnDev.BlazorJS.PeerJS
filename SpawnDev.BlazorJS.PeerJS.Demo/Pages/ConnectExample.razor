@@ -3,7 +3,7 @@
 @using System.Text;
 @using System.Text.Json;
 @using SpawnDev.BlazorJS.JSObjects.WebRTC;
-@using SpawnDev.BlazorJS.Reflection;
+@using SpawnDev.BlazorJS.Toolbox;
 @using System.Reflection;
 @implements IDisposable
 
@@ -169,7 +169,7 @@
 
     void DataConnection_OnData(JSObject msg)
     {
-        if (msg.JSRef!.PropertyInstanceOf() == "String")
+        if (msg.JSRef!.ConstructorName() == "String")
         {
             Log(">> " + msg.JSRefAs<string>());
         }
