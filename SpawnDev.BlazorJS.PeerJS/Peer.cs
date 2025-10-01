@@ -75,7 +75,8 @@ namespace SpawnDev.BlazorJS.PeerJS
         static Task? _Init = null;
         /// <summary>
         /// Load the SimplePeer Javascript library<br/>
-        /// https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js
+        /// https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js
+        /// https://unpkg.com/peerjs/dist/peerjs.min.js
         /// </summary>
         /// <returns>Returns when the library has been loaded</returns>
         public static Task Init(string? libPath = null)
