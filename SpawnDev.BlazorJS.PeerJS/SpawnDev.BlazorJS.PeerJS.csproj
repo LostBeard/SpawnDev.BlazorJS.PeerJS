@@ -4,7 +4,7 @@
 		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Version>1.6.0</Version>
+		<Version>1.7.0</Version>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<EmbedAllSources>true</EmbedAllSources>
@@ -29,12 +29,21 @@
 
 	<ItemGroup>
 		<PackageReference Include="SpawnDev.BlazorJS" Version="2.44.0" />
-		<PackageReference Include="SpawnDev.BlazorJS.WebWorkers" Version="2.19.0" />
+		<PackageReference Include="SpawnDev.BlazorJS.WebWorkers" Version="2.25.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<SupportedPlatform Include="browser" />
 	</ItemGroup>
+	
+	<PropertyGroup>
+		<!-- 
+		Disable filename mangling with hash ("cache busting fingerprinting") which is enabled by default in .Net 10 SDK. 
+		Not supported by this library.
+		-->
+		<StaticWebAssetFingerprintingEnabled>false</StaticWebAssetFingerprintingEnabled>
+		<StaticWebAssetsFingerprintContent>false</StaticWebAssetsFingerprintContent>
+	</PropertyGroup>
 
 </Project>
 
