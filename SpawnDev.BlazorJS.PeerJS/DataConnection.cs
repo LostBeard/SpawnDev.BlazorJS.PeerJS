@@ -48,15 +48,15 @@ namespace SpawnDev.BlazorJS.PeerJS
         /// <summary>
         /// The number of messages queued to be sent once the browser buffer is no longer full.
         /// </summary>
-        public int BufferSize=> JSRef!.Get<int>("bufferSize");
+        public int BufferSize => JSRef!.Get<int>("bufferSize");
 
         /// <summary>
         /// Emitted when data is received from the remote peer.
         /// </summary>
-        public JSEventCallback<JSObject> OnData{ get => new JSEventCallback<JSObject>("data", On, Off); set { } }
+        public ActionEvent<JSObject> OnData { get => new ActionEvent<JSObject>("data", On, Off); set { } }
         /// <summary>
         /// Emitted when the connection is established and ready-to-use.
         /// </summary>
-        public JSEventCallback OnOpen { get => new JSEventCallback("open", On, Off); set { } }
+        public ActionEvent OnOpen { get => new ActionEvent("open", On, Off); set { } }
     }
 }

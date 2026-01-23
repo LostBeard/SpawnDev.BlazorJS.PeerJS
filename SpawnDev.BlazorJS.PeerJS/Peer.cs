@@ -160,27 +160,27 @@ namespace SpawnDev.BlazorJS.PeerJS
         /// Emitted when a connection to the PeerServer is established. You may use the peer before this is emitted, but messages to the server will be queued.<br/>
         /// id string - the brokering ID of the peer (which was either provided in the constructor or assigned by the server)
         /// </summary>
-        public JSEventCallback<string> OnOpen { get => new JSEventCallback<string>("open", On, Off); set { } }
+        public ActionEvent<string> OnOpen { get => new ActionEvent<string>("open", On, Off); set { } }
         /// <summary>
         /// Emitted when a new data connection is established from a remote peer.
         /// </summary>
-        public JSEventCallback<DataConnection> OnConnection { get => new JSEventCallback<DataConnection>("connection", On, Off); set { } }
+        public ActionEvent<DataConnection> OnConnection { get => new ActionEvent<DataConnection>("connection", On, Off); set { } }
         /// <summary>
         /// Emitted when a remote peer attempts to call you. The emitted mediaConnection is not yet active; you must first answer the call (mediaConnection.answer([stream]);). Then, you can listen for the stream event.
         /// </summary>
-        public JSEventCallback<MediaConnection> OnCall { get => new JSEventCallback<MediaConnection>("call", On, Off); set { } }
+        public ActionEvent<MediaConnection> OnCall { get => new ActionEvent<MediaConnection>("call", On, Off); set { } }
         /// <summary>
         /// Emitted when the peer is destroyed and can no longer accept or create any new connections. At this time, the peer's connections will all be closed.
         /// </summary>
-        public JSEventCallback OnClose { get => new JSEventCallback("close", On, Off); set { } }
+        public ActionEvent OnClose { get => new ActionEvent("close", On, Off); set { } }
         /// <summary>
         /// Emitted when the peer is disconnected from the signalling server, either manually or because the connection to the signalling server was lost. When a peer is disconnected, its existing connections will stay alive, but the peer cannot accept or create any new connections. You can reconnect to the server by calling peer.reconnect().
         /// </summary>
-        public JSEventCallback OnDisconnected { get => new JSEventCallback("disconnected", On, Off); set { } }
+        public ActionEvent OnDisconnected { get => new ActionEvent("disconnected", On, Off); set { } }
         /// <summary>
         /// Errors on the peer are almost always fatal and will destroy the peer. Errors from the underlying socket and PeerConnections are forwarded here.<br/>
         /// 
         /// </summary>
-        public JSEventCallback<PeerError> OnError { get => new JSEventCallback<PeerError>("error", On, Off); set { } }
+        public ActionEvent<PeerError> OnError { get => new ActionEvent<PeerError>("error", On, Off); set { } }
     }
 }

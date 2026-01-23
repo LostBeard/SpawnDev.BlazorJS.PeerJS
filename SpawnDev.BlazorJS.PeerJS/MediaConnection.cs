@@ -27,6 +27,6 @@ namespace SpawnDev.BlazorJS.PeerJS
         /// <summary>
         /// Emitted when a remote peer adds a stream.
         /// </summary>
-        public JSEventCallback<MediaStream> OnStream { get => new JSEventCallback<MediaStream>("stream", On, Off); set { } }
+        public ActionEvent<MediaStream> OnStream { get => new ActionEvent<MediaStream>("stream", On, Off); set { } }
     }
 }

@@ -41,10 +41,10 @@ namespace SpawnDev.BlazorJS.PeerJS
         /// <summary>
         /// Emitted when either you or the remote peer closes the data connection.
         /// </summary>
-        public JSEventCallback OnClose { get => new JSEventCallback("close", On, Off); set { } }
+        public ActionEvent OnClose { get => new ActionEvent("close", On, Off); set { } }
         /// <summary>
         /// Emitted when an error occurs
         /// </summary>
-        public JSEventCallback<PeerError> OnError { get => new JSEventCallback<PeerError>("error", On, Off); set { } }
+        public ActionEvent<PeerError> OnError { get => new ActionEvent<PeerError>("error", On, Off); set { } }
     }
 }
